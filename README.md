@@ -63,4 +63,4 @@ Dotfiles (schickling/dotfiles#484) avoids this because its root workspace member
 
 ## Related Issue
 
-TBD
+https://github.com/overengineeringstudio/effect-utils/issues/494
