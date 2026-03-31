@@ -45,21 +45,20 @@ ${builtins.concatStringsSep "\nchmod -R +w workspace\n" (
 chmod -R +w workspace
 ```
 
-## Context
+## Trigger condition
 
-This occurs in `megarepo-all` (schickling/megarepo-all#62) where:
-- Root `pnpm-workspace.yaml` lists `repos/effect-utils/packages/*` as workspace members via `extraMembers`
-- `mk-pnpm-cli` stages external install root manifests (repos/effect-utils/) into the root deps src for link resolution
-- The root deps FOD output includes `repos/effect-utils/` directory tree with read-only perms
-- The effect-utils install root restore tries to create `node_modules` under the same paths
+This occurs when:
+- Root `pnpm-workspace.yaml` lists packages under an external install root as workspace members (via `extraMembers`)
+- `stageExternalInstallRootManifestOnlyCmd` stages external manifests into the root deps src
+- The root FOD output includes the external install root directory tree with read-only perms
+- The external install root restore tries to create `node_modules` under the same paths
 
-Dotfiles (schickling/dotfiles#484) avoids this because its root workspace members (`flakes/*`) don't overlap with `repos/effect-utils/`.
+Repos where root workspace members don't overlap with external install root paths (e.g. root members under `flakes/*`) are unaffected.
 
 ## Versions
 
 - effect-utils: `88f3627` (main, 2026-03-31)
 - GNU coreutils cp: 9.9 (Nix)
-- OS: macOS 15.3.2 (Darwin 25.2.0) — also affects Linux (same GNU cp behavior)
 
 ## Related Issue
 
